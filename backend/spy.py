@@ -423,5 +423,4 @@ def inventor_get():
 
 
 if __name__ == "__main__":
-    app.run(use_reloader=True, host='127.0.0.1', port=8080)
-    # prior_main()
+    app.run(use_reloader=False, host='0.0.0.0', port=8080)
