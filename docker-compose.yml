@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # backend
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=mysecretpassword
+      - DB_NAME=spy_game
+    depends_on:
+      - db
+
+  # --- database ---
+  db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+      MYSQL_DATABASE: spy_game
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./backend/game_spy_database.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # --- frontend ---
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+    depends_on:
+      - backend

@@ -154,8 +154,8 @@ const LazyMain = () => {
     open: false,
     title: "",
     description: "",
-    onClose: () => {},
-    onConfirm: () => {},
+    onClose: () => { },
+    onConfirm: () => { },
   });
 
   const [searchInput, setSearchInput] = useState<string>("");
@@ -166,7 +166,7 @@ const LazyMain = () => {
     open: false,
     title: "",
     description: "",
-    onClose: () => {},
+    onClose: () => { },
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -455,32 +455,27 @@ const LazyMain = () => {
     ICAO_result = nextCountry!.ICAO!;
 
     message.push(
-      `${
-        isSameLocation
-          ? "You taxied around the same runway and emitted"
-          : `You went to ${nextCountry!.name} with`
-      } ${
-        Number.isInteger(carbon_emission)
-          ? carbon_emission
-          : carbon_emission.toFixed(3)
-      } carbon emission, total carbon emission is now ${
-        Number.isInteger(carbon_result)
-          ? carbon_result
-          : carbon_result.toFixed(3)
+      `${isSameLocation
+        ? "You taxied around the same runway and emitted"
+        : `You went to ${nextCountry!.name} with`
+      } ${Number.isInteger(carbon_emission)
+        ? carbon_emission
+        : carbon_emission.toFixed(3)
+      } carbon emission, total carbon emission is now ${Number.isInteger(carbon_result)
+        ? carbon_result
+        : carbon_result.toFixed(3)
       }`
     );
     setErrorDisplay({
       open: true,
       title: "Travel",
-      description: `You went to ${nextCountry!.name} with ${
-        Number.isInteger(carbon_emission)
+      description: `You went to ${nextCountry!.name} with ${Number.isInteger(carbon_emission)
           ? carbon_emission
           : carbon_emission.toFixed(3)
-      } carbon emission, total carbon emission is now ${
-        Number.isInteger(carbon_emission)
+        } carbon emission, total carbon emission is now ${Number.isInteger(carbon_emission)
           ? carbon_emission
           : carbon_emission.toFixed(3)
-      }`,
+        }`,
       onClose: () => {
         setErrorDisplay({ ...errorDisplay, open: false });
       },
@@ -1173,43 +1168,47 @@ const LazyMain = () => {
         )}
       </div> */}
       <div className="flex flex-1 h-prevent-footer">
-        {accordionValue.length !== 0 && nextLocation?.coordinate ? (
-          <Map
-            className="flex flex-1 h-prevent-footer"
-            positions={[
-              {
-                position: [currentLocation[1], currentLocation[0]],
-                name: localStorage.getItem("currentPlayerCountry")!,
-              },
-              {
-                position: [
-                  nextLocation!.coordinate[1],
-                  nextLocation!.coordinate[0],
-                ],
-                name: localStorage.getItem("currentPlayerCountry")!,
-              },
-            ]}
-            polyline={true}
-            width={2}
-            material={Color.RED}
-          ></Map>
-        ) : (
-          <Map
-            className="flex flex-1 h-prevent-footer"
-            positions={
-              playerLocations.length > 0
-                ? playerCountries.map((country) => {
-                    const positions = playerLocations.find((e) => {
-                      return e.iso_country === country.iso_country;
-                    })!.location;
-                    return {
-                      name: country.iso_country,
-                      position: [positions[1], positions[0]],
-                    };
-                  })
-                : []
-            }
-          ></Map>
+        {currentLocation.length === 2 && (
+          <>
+            {accordionValue.length !== 0 && nextLocation?.coordinate ? (
+              <Map
+                className="flex flex-1 h-prevent-footer"
+                positions={[
+                  {
+                    position: [currentLocation[1], currentLocation[0]],
+                    name: localStorage.getItem("currentPlayerCountry")!,
+                  },
+                  {
+                    position: [
+                      nextLocation!.coordinate[1],
+                      nextLocation!.coordinate[0],
+                    ],
+                    name: localStorage.getItem("currentPlayerCountry")!,
+                  },
+                ]}
+                polyline={true}
+                width={2}
+                material={Color.RED}
+              />
+            ) : (
+              <Map
+                className="flex flex-1 h-prevent-footer"
+                positions={
+                  playerLocations.length > 0
+                    ? playerCountries.map((country) => {
+                      const positions = playerLocations.find((e) => {
+                        return e.iso_country === country.iso_country;
+                      })!.location;
+                      return {
+                        name: country.iso_country,
+                        position: [positions[1], positions[0]],
+                      };
+                    })
+                    : []
+                }
+              />
+            )}
+          </>
         )}
       </div>
     </div>
